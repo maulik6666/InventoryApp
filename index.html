@@ -1,8 +1,11 @@
 ﻿<!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-<head></head>
+<head>
+	<title>My XHTML Page</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
 
 <body>
 
@@ -13,9 +16,13 @@
 	<footer></footer>
 
 	<script type="module" src="https://s.brightspace.com/lib/bsi/2025.3.232/unbundled/mathjax.js"></script>
-	<script type="text/javascript">document.addEventListener('DOMContentLoaded', function () {
-			if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
-				document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function () {
+			if (
+				document.querySelector('math') ||
+				/\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)
+			) {
+				document.querySelectorAll('mspace[linebreak="newline"]').forEach(function (elm) {
 					elm.setAttribute('style', 'display: block; height: 0.5rem;');
 				});
 
@@ -25,19 +32,24 @@
 					enableMML3Support: false
 				});
 			}
-		});</script>
+		});
+	</script>
 
 	<script type="module" src="https://s.brightspace.com/lib/bsi/2025.3.232/unbundled/prism.js"></script>
-	<script type="text/javascript">document.addEventListener('DOMContentLoaded', function () {
-			document.querySelectorAll('.d2l-code').forEach(code => {
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelectorAll('.d2l-code').forEach(function (code) {
 				window.D2L.Prism.formatCodeElement(code);
 			});
-		});</script>
+		});
+	</script>
 
 	<script type="module" src="https://s.brightspace.com/lib/bsi/2025.3.232/unbundled/embeds.js"></script>
-	<script type="text/javascript">document.addEventListener('DOMContentLoaded', function () {
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function () {
 			window.D2L.EmbedRenderer.renderEmbeds(document.body);
-		});</script>
+		});
+	</script>
 
 </body>
 
