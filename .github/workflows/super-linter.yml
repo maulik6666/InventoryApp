@@ -27,5 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_PYTHON: true
           VALIDATE_HTML: true
+          VALIDATE_HTML_PRETTIER: true
+          VALIDATE_PYTHON_BLACK: true
           FIX_PYTHON_BLACK: true
           FIX_HTML_PRETTIER: true
