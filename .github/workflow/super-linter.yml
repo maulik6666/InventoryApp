@@ -1,0 +1,42 @@
+name: Super-Linter
+ 
+on:
+  pull_request:
+    types: [opened, reopened]
+ 
+permissions:
+  contents: read
+  packages: read
+  statuses: write  # To report GitHub Actions status checks
+ 
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # super-linter needs full git history for changed files detection
+          fetch-depth: 0
+ 
+      - name: Run Super-Linter
+        uses: super-linter/super-linter@v7.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Only validate Python and HTML for this project
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_PYTHON: true
+          VALIDATE_HTML: true
+          # Auto-fix formatting where possible
+          FIX_PYTHON_BLACK: true
+          FIX_HTML_PRETTIER: true
+          # Disable unnecessary linters
+          VALIDATE_CHECKOV: false
+          VALIDATE_JAVASCRIPT_ES: false
+          VALIDATE_CSS: false
+          VALIDATE_JSON: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_YAML: false
+          VALIDATE_DOCKER: false
