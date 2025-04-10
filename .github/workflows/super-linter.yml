@@ -1,42 +1,66 @@
 name: Super-Linter
- 
+
 on:
   pull_request:
-    branches: [main]
- 
+    types: [opened, reopened]
+
 permissions:
   contents: read
   packages: read
-  statuses: write  # To report GitHub Actions status checks
- 
+  statuses: write
+
 jobs:
   lint:
     name: Lint Code
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # super-linter needs full git history for changed files detection
           fetch-depth: 0
- 
+
       - name: Run Super-Linter
         uses: super-linter/super-linter@v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Only validate Python and HTML for this project
+
+          # Must be true when selectively disabling validators
           VALIDATE_ALL_CODEBASE: true
-          VALIDATE_PYTHON: true
+
+          # Enable only what you need by disabling others
+          VALIDATE_BASH: false
+          VALIDATE_CHECKOV: false
+          VALIDATE_CLOJURE: false
+          VALIDATE_CSS: false
+          VALIDATE_DOCKER: false
+          VALIDATE_EDITORCONFIG: false
+          VALIDATE_ENV: false
+          VALIDATE_GITHUB_ACTIONS: false
+          VALIDATE_GO: false
+          VALIDATE_GROOVY: false
           VALIDATE_HTML: true
-          # Auto-fix formatting where possible
+          VALIDATE_JAVA: false
+          VALIDATE_JAVASCRIPT_ES: false
+          VALIDATE_JSON: false
+          VALIDATE_KOTLIN: false
+          VALIDATE_KUBERNETES_KUBEVAL: false
+          VALIDATE_LATEX: false
+          VALIDATE_LUA: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_PERL: false
+          VALIDATE_PHP: false
+          VALIDATE_POWERSHELL: false
+          VALIDATE_PYTHON: true
+          VALIDATE_R: false
+          VALIDATE_RUBY: false
+          VALIDATE_SQL: false
+          VALIDATE_TERRAFORM: false
+          VALIDATE_TOML: false
+          VALIDATE_TYPESCRIPT_ES: false
+          VALIDATE_XML: false
+          VALIDATE_YAML: false
+
+          # Optional fix tools
           FIX_PYTHON_BLACK: true
           FIX_HTML_PRETTIER: true
-          # Disable unnecessary linters
-          VALIDATE_CHECKOV: false
-          VALIDATE_JAVASCRIPT_ES: false
-          VALIDATE_CSS: false
-          VALIDATE_JSON: false
-          VALIDATE_MARKDOWN: false
-          VALIDATE_YAML: false
-          VALIDATE_DOCKER: false
