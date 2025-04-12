@@ -4,6 +4,7 @@ import json
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Inventory')
 
+
 def lambda_handler(event, context):
     try:
         location_id = event['pathParameters']['id']
