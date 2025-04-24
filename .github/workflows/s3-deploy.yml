@@ -1,32 +1,39 @@
-name: Deploy Website to S3 Bucket
+name: Deploy to S3
 
 on:
   push:
-    branches:
-      - main    # Runs on every push to the main branch
+    branches: [main]
     paths:
-      - index.html
+      - 'index.html'
 
 jobs:
-  deploy-to-s3:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout your repository code
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step 2: Configure AWS credentials using your repository secrets
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: us-east-1  # Change this if your bucket is in another region
-
-      # Step 3: Upload index.html from the root to S3
-      - name: Deploy index.html to S3
+          aws-region: us-east-1
+      - name: Deploy to S3
         run: |
           aws s3 cp index.html s3://inventory-app-finalproject/index.html \
             --cache-control "max-age=0, no-cache, no-store, must-revalidate"
+          aws s3 cp index.html s3://inventory-app-finalproject/index.html
+      - name: Set Bucket Policy
+        run: |
+          aws s3api put-bucket-policy --bucket inventory-app-finalproject --policy '{
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "s3:GetObject",
+              "Resource": "arn:aws:s3:::inventory-app-finalproject/*"
+            }]
+          }'
+      - name: Configure Static Website Hosting
+        run: |
+          aws s3 website s3://inventory-app-finalproject/ --index-document index.html
