@@ -1,28 +1,38 @@
 import boto3
 import json
-from ulid import ULID
+import uuid
+from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Inventory')
 
 
-
 def lambda_handler(event, context):
     try:
-        data = json.loads(event['body'])
+        # Parse incoming request body
+        if isinstance(event.get('body'), str):
+            data = json.loads(event['body'])
+        elif isinstance(event.get('body'), dict):
+            data = event['body']
+        else:
+            data = event
+
         item = {
-            'Item id': str(ULID()),
-            'Item name': data['name'],
-            'Item description': data['description'],
-            'Item qty on hand': int(data['qty']),
-            'Item price': float(data['price']),
-            'Item location_id': int(data['location_id'])
+            'item_id': str(uuid.uuid4()),  # Matches Partition Key
+            'location_id': Decimal(str(data['location_id'])),  # Matches Sort Key
+            'name': data['name'],
+            'description': data['description'],
+            'qty': Decimal(str(data['qty'])),
+            'price': Decimal(str(data['price']))
         }
+
         table.put_item(Item=item)
+
         return {
             'statusCode': 201,
             'body': json.dumps({'message': 'Item added successfully'})
         }
+
     except Exception as e:
         return {
             'statusCode': 500,
