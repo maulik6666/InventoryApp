@@ -28,6 +28,4 @@ jobs:
       # Step 3: Upload index.html from the root to S3
       - name: Deploy index.html to S3
         run: |
-          aws s3 cp index.html s3://inventory-app-finalproject/index.html \
-            --acl public-read \
-            --cache-control "max-age=0, no-cache, no-store, must-revalidate"
+          aws s3 cp index.html s3://inventory-app-finalproject/index.html
